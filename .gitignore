@@ -1,0 +1,17 @@
+# Virtual environment
+venv/
+myenv/
+
+# Byte-compiled files
+*.pyc
+
+# Database
+db.sqlite3
+
+# IDE files
+.vscode/
+.idea/
+
+# Django specific
+/staticfiles/
+/media/
