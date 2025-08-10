@@ -10,8 +10,6 @@ class ProjectSerializer(serializers.ModelSerializer): # <-- Clase cambiada a Pro
 
     def get_main_image_url(self, obj):
         if obj.main_image:
-            request = self.context.get('request')
-            if request is not None:
-                return request.build_absolute_uri(obj.main_image.url)
-            return obj.main_image.url
+            # Retorna la URL completa de la imagen en S3
+            return f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/media/{obj.main_image.name}'
         return None
