@@ -17,6 +17,6 @@ class ProjectSerializer(serializers.ModelSerializer): # <-- Clase cambiada a Pro
 
     def get_main_image_url(self, obj):
         if obj.main_image:
-            # Retorna la URL completa de la imagen en S3
-            return f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/media/{obj.main_image.name}'
+            # Obtiene la URL directamente desde el campo de la imagen
+            return obj.main_image.url
         return None
