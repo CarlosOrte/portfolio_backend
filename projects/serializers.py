@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Project # <-- Importado Project
+from django.conf import settings # Importa las configuraciones
 
 class ProjectSerializer(serializers.ModelSerializer): # <-- Clase cambiada a ProjectSerializer
     main_image_url = serializers.SerializerMethodField()
