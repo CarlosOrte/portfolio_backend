@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 1. SEGURIDAD Y ENTORNO
 # --------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
