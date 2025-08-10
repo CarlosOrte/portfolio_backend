@@ -15,21 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------
 # 1. SEGURIDAD Y ENTORNO
 # --------------------
-# Estas configuraciones se obtienen de las variables de entorno de Render,
-# lo que es más seguro que hardcodearlas.
-
-# SECRET_KEY es una variable de entorno en Render.
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
-
-# DEBUG debe ser False en producción.
 DEBUG = False
-
-# ALLOWED_HOSTS acepta los dominios de Render.
-# Debes añadir tus dominios de Render y cualquier dominio personalizado aquí.
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,30 +36,14 @@ INSTALLED_APPS = [
     'storages',
 ]
 
-# Configuración de Django Storages y AWS S3
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = 'EE.UU. Este (Ohio) us-east-2' # Ej: 'us-east-1'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_DEFAULT_ACL = 'public-read' # Hace que las imágenes sean públicas
-
-# URLS para archivos media y estáticos
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# (Opcional) Si quieres también los archivos estáticos en S3:
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-
 # --------------------
 # 2. MIDDLEWARE Y CORS
 # --------------------
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # Debe ir antes de CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -79,16 +51,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Configuración de CORS para que React pueda comunicarse con Django.
-# Las URL de los orígenes permitidos se obtienen de una variable de entorno.
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 
 # --------------------
 # 3. BASE DE DATOS
 # --------------------
-# Se usa dj_database_url para parsear la URL de conexión a la base de datos que
-# proporciona Render en la variable de entorno DATABASE_URL.
-
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -97,23 +64,27 @@ DATABASES = {
 }
 
 # --------------------
-# 4. ARCHIVOS ESTÁTICOS Y DE MEDIA
+# 4. ARCHIVOS ESTÁTICOS Y DE MEDIA (CONSOLIDADO)
 # --------------------
-# Configuración para que Render pueda servir archivos estáticos y media.
-# Esto es esencial para el despliegue.
 
-# Archivos estáticos de Django (CSS, JS del admin, etc.)
+# Configuración de WhiteNoise para archivos estáticos
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Archivos de media (imágenes de tus proyectos)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Configuración de Django Storages y AWS S3 para archivos de media
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'us-east-2' # Valor corregido
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = 'public-read'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # --------------------
 # 5. OTRAS CONFIGURACIONES
 # --------------------
-
 ROOT_URLCONF = 'portfolio_backend.urls'
 
 TEMPLATES = [
@@ -133,8 +104,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio_backend.wsgi.application'
 
-# Configuración de validación de contraseñas, internacionalización, etc.
-# Estas configuraciones por defecto están bien.
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -150,14 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
