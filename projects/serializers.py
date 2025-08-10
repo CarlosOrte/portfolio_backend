@@ -7,7 +7,13 @@ class ProjectSerializer(serializers.ModelSerializer): # <-- Clase cambiada a Pro
 
     class Meta:
         model = Project # <-- Modelo cambiado a Project
-        fields = '__all__'
+        # Lista todos los campos que quieres incluir, excluyendo 'main_image'
+        fields = [
+            'id', 'main_image_url', 'title', 'category', 'short_description', 
+            'problem_statement', 'solution_details', 'process_steps', 
+            'technologies_used', 'challenges_faced', 'results_impact', 
+            'deployment_link', 'github_link', 'slug'
+        ]
 
     def get_main_image_url(self, obj):
         if obj.main_image:
