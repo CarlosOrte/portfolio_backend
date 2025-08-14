@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
 DEBUG = True
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS =  ['carlosortegaux.com', 'www.carlosortegaux.com', 'tu-backend.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,8 +51,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-
+# CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+CORS_ALLOWED_ORIGINS = [
+    'https://carlosortegaux.com',
+    'https://www.carlosortegaux.com',
+    'http://localhost:3000',
+]
 # --------------------
 # 3. BASE DE DATOS
 # --------------------
