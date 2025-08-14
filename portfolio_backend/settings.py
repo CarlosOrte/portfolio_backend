@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key')
 DEBUG = True
-ALLOWED_HOSTS = ['carlosortegaux.com', 'www.carlosortegaux.com', 'portfolio-ro29.onrender.com']
+ALLOWED_HOSTS =['carlosortegaux.com', 'www.carlosortegaux.com', 'portfolio-ro29.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
