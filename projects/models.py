@@ -1,6 +1,7 @@
 # myportfolio_project/projects/models.py (antes casestudies/models.py)
 from django.db import models
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
 
 class Project(models.Model): # <-- Clase cambiada a Project
     title = models.CharField(max_length=255, verbose_name="Título del Proyecto") # <-- Etiqueta cambiada
@@ -14,7 +15,7 @@ class Project(models.Model): # <-- Clase cambiada a Project
     challenges_faced = models.TextField(blank=True, null=True, verbose_name="Desafíos Enfrentados")
     results_impact = models.TextField(verbose_name="Resultados e Impacto")
 
-    main_image = models.ImageField(upload_to='portfolio_images/', blank=True, null=True, verbose_name="Imagen Principal del Proyecto") # <-- Carpeta de subida cambiada y etiqueta
+    main_image_url = CloudinaryField('image')
 
     deployment_link = models.URLField(max_length=500, blank=True, null=True, verbose_name="Enlace de Despliegue/Demo")
     github_link = models.URLField(max_length=500, blank=True, null=True, verbose_name="Enlace a GitHub")

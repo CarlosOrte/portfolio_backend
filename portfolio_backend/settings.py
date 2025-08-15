@@ -9,7 +9,7 @@ import dj_database_url
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
-import cloudinary.api
+
 
 # Cargar variables de entorno
 load_dotenv()
