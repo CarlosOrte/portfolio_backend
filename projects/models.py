@@ -15,7 +15,7 @@ class Project(models.Model): # <-- Clase cambiada a Project
     challenges_faced = models.TextField(blank=True, null=True, verbose_name="Desafíos Enfrentados")
     results_impact = models.TextField(verbose_name="Resultados e Impacto")
 
-    main_image_url = CloudinaryField('image')
+    main_image = CloudinaryField('image')
 
     deployment_link = models.URLField(max_length=500, blank=True, null=True, verbose_name="Enlace de Despliegue/Demo")
     github_link = models.URLField(max_length=500, blank=True, null=True, verbose_name="Enlace a GitHub")
